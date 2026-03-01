@@ -40,7 +40,7 @@ export default function PatternsListPage() {
     <div className={styles.container} data-testid="patterns-page">
       <header className={styles.header}>
         <h1 className={styles.title} data-testid="patterns-page-title">
-          React Design Patterns
+          React Migration
         </h1>
         <p className={styles.subtitle} data-testid="patterns-page-subtitle">
           Explore {patterns.length} modern React patterns

@@ -10,7 +10,7 @@ import { test, expect } from "@playwright/test";
  * - Skip edge cases (handle in integration tests)
  */
 
-test.describe("React Design Patterns App - Critical Flows", () => {
+test.describe("React Migration App - Critical Flows", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
   });

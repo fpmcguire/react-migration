@@ -41,7 +41,16 @@ const STORAGE_KEY = 'cookie-preferences';
 const GA_MEASUREMENT_ID = 'G-MD06T4XGJJ'; // Your Google Analytics ID
 
 // Check if analytics is enabled (from environment variable)
-const isAnalyticsEnabled = import.meta.env.VITE_ANALYTICS_ENABLED === 'true';
+// Default to true in production, false in development
+const isAnalyticsEnabled = 
+  import.meta.env.VITE_ANALYTICS_ENABLED === 'true' || 
+  (!import.meta.env.DEV && !import.meta.env.VITE_ANALYTICS_ENABLED);
+
+console.log('[GA] Environment Check:', {
+  VITE_ANALYTICS_ENABLED: import.meta.env.VITE_ANALYTICS_ENABLED,
+  DEV: import.meta.env.DEV,
+  isAnalyticsEnabled: isAnalyticsEnabled,
+});
 
 const CookieConsentContext = createContext<CookieConsentContextType | null>(null);
 
@@ -67,9 +76,13 @@ function saveToStorage(prefs: CookiePreferences): void {
 /**
  * Load Google Analytics script dynamically
  * Only called when user consents AND analytics is enabled
+ * 
+ * Follows Google's official gtag.js initialization pattern:
+ * https://support.google.com/analytics/answer/9310895
  */
 function loadGoogleAnalytics(): void {
   if (typeof window === 'undefined' || typeof document === 'undefined') {
+    console.warn('[GA] Window or Document not available');
     return;
   }
 
@@ -79,33 +92,60 @@ function loadGoogleAnalytics(): void {
     return;
   }
 
-  // Don't load if already loaded
-  if (window.gtag) {
+  // Don't load if already loaded (check for gtag function, not just script)
+  if (typeof window.gtag === 'function') {
     console.log('[GA] Already loaded');
     return;
   }
 
   console.log('[GA] Loading Google Analytics...');
+  console.log('[GA] GA ID:', GA_MEASUREMENT_ID);
 
-  // Load GA script
-  const script = document.createElement('script');
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-  document.head.appendChild(script);
-
-  // Initialize gtag
+  // Initialize dataLayer and gtag function BEFORE loading script
+  // (Google Analytics script will use this)
   window.dataLayer = window.dataLayer || [];
+  
+  // Create temporary gtag function that queues commands
+  // Real gtag from Google will override this after script loads
   function gtag(...args: unknown[]) {
     window.dataLayer?.push(args);
   }
-  gtag('js', new Date());
-  gtag('config', GA_MEASUREMENT_ID, {
-    anonymize_ip: true,
-    cookie_flags: 'SameSite=None;Secure',
-  });
-
+  
   window.gtag = gtag;
-  console.log('[GA] Google Analytics loaded successfully');
+  console.log('[GA] Temporary gtag function created');
+
+  // NOW load the GA script
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+  
+  script.onload = () => {
+    console.log('[GA] Google Analytics script loaded successfully');
+    // Now that script is loaded, window.gtag will be the real one from Google
+    if (typeof window.gtag === 'function') {
+      try {
+        window.gtag('js', new Date());
+        window.gtag('config', GA_MEASUREMENT_ID, {
+          anonymize_ip: true,
+          cookie_flags: 'SameSite=None;Secure',
+        });
+        console.log('[GA] Google Analytics configured successfully');
+      } catch (error) {
+        console.error('[GA] Error configuring Google Analytics:', error);
+      }
+    } else {
+      console.warn('[GA] window.gtag is not a function after script load');
+    }
+  };
+  
+  script.onerror = (error) => {
+    console.error('[GA] Failed to load Google Analytics script:', error);
+    // Provide troubleshooting info
+    console.error('[GA] Check: 1) Network connectivity 2) CSP headers 3) Firewall rules 4) GA ID is valid');
+  };
+  
+  document.head.appendChild(script);
+  console.log('[GA] Script element appended to document head');
 }
 
 export function CookieConsentProvider({ children }: { children: ReactNode }) {

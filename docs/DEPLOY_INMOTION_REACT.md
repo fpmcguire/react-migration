@@ -1,13 +1,15 @@
-# Deploying React Design Patterns to InMotion Hosting
+# Deploying React Migration to InMotion Hosting
 
 ## Deployment Path
-`/frank-mcguire/react-design-patterns/`
+
+`/frank-mcguire/react-migration/`
 
 ---
 
 ## ⚠️ Important Note
 
 This React app is a **demonstration of React 19 patterns**, NOT a migration of the Angular content. It contains:
+
 - ~10 React patterns (hooks, context, use(), etc.)
 - Modern React 19 architecture examples
 - Migration proof-of-concept
@@ -29,16 +31,16 @@ The Angular app has 8 categories with 500+ lessons. This React app has 1 categor
 Update `vite.config.ts` to set the correct base path:
 
 ```typescript
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
 
 export default defineConfig({
-  base: '/frank-mcguire/react-design-patterns/', // ← ADD THIS LINE
+  base: "/frank-mcguire/react-migration/", // ← ADD THIS LINE
   plugins: [react()],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      "@": path.resolve(__dirname, "./src"),
     },
   },
   // ... rest of config
@@ -54,36 +56,36 @@ Update `public/.htaccess` with the subdirectory path:
 ```apache
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /frank-mcguire/react-design-patterns/
-  
+  RewriteBase /frank-mcguire/react-migration/
+
   # Don't rewrite files or directories
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  
+
   # Rewrite everything else to index.html for client-side routing
-  RewriteRule . /frank-mcguire/react-design-patterns/index.html [L]
+  RewriteRule . /frank-mcguire/react-migration/index.html [L]
 </IfModule>
 
 # Caching
 <IfModule mod_expires.c>
   ExpiresActive On
-  
+
   # Images
   ExpiresByType image/jpeg "access plus 1 year"
   ExpiresByType image/png "access plus 1 year"
   ExpiresByType image/gif "access plus 1 year"
   ExpiresByType image/webp "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 year"
-  
+
   # CSS and JavaScript
   ExpiresByType text/css "access plus 1 month"
   ExpiresByType text/javascript "access plus 1 month"
   ExpiresByType application/javascript "access plus 1 month"
-  
+
   # Fonts
   ExpiresByType font/woff2 "access plus 1 year"
   ExpiresByType font/woff "access plus 1 year"
-  
+
   # HTML (no caching for index.html)
   ExpiresByType text/html "access plus 0 seconds"
 </IfModule>
@@ -141,19 +143,21 @@ This creates the `dist/` folder with production-ready files.
    - Port: 21
 
 2. **Navigate to directory:**
+
    ```
    /public_html/frank-mcguire/
    ```
-   
+
    If `frank-mcguire` doesn't exist, create it in FileZilla.
 
 3. **Create subdirectory:**
+
    ```
-   /public_html/frank-mcguire/react-design-patterns/
+   /public_html/frank-mcguire/react-migration/
    ```
 
 4. **Upload files:**
-   - Upload ALL contents of `dist/` into `react-design-patterns/`
+   - Upload ALL contents of `dist/` into `react-migration/`
    - **IMPORTANT**: Upload the contents, not the `dist` folder itself
    - Files should include: `index.html`, `assets/`, `.htaccess`, etc.
 
@@ -165,24 +169,25 @@ This creates the `dist/` folder with production-ready files.
 
 3. **Create directory** (if needed):
    - Click "New Folder"
-   - Name: `react-design-patterns`
+   - Name: `react-migration`
 
 4. **Upload files:**
-   
+
    **Method 1 - Direct Upload:**
-   - Enter `react-design-patterns/` folder
+   - Enter `react-migration/` folder
    - Click "Upload"
    - Upload all files from `dist/` folder
    - This may take time for many files
 
    **Method 2 - ZIP Upload (Faster):**
+
    ```bash
    # On your local machine, create ZIP
    cd dist
    zip -r react-app.zip .
    ```
-   
-   - Upload `react-app.zip` to `react-design-patterns/`
+
+   - Upload `react-app.zip` to `react-migration/`
    - Right-click ZIP in File Manager → Extract
    - Delete ZIP after extraction
 
@@ -194,13 +199,14 @@ This creates the `dist/` folder with production-ready files.
 
 ## Step 6: Verify Deployment
 
-Visit: `https://yourdomain.com/frank-mcguire/react-design-patterns/`
+Visit: `https://yourdomain.com/frank-mcguire/react-migration/`
 
 **Expected behavior:**
+
 - ✅ Home page loads
 - ✅ Can navigate to `/patterns`
 - ✅ Can view individual patterns
-- ✅ Direct URL navigation works (e.g., `/frank-mcguire/react-design-patterns/patterns/use-state`)
+- ✅ Direct URL navigation works (e.g., `/frank-mcguire/react-migration/patterns/use-state`)
 - ✅ Browser refresh doesn't cause 404
 
 ---
@@ -214,7 +220,8 @@ Visit: `https://yourdomain.com/frank-mcguire/react-design-patterns/`
 **Cause:** Incorrect base path configuration
 
 **Fix:**
-1. Check `vite.config.ts` has `base: '/frank-mcguire/react-design-patterns/'`
+
+1. Check `vite.config.ts` has `base: '/frank-mcguire/react-migration/'`
 2. Rebuild: `npm run build`
 3. Re-upload `dist/` contents
 
@@ -225,8 +232,9 @@ Visit: `https://yourdomain.com/frank-mcguire/react-design-patterns/`
 **Cause:** Base path mismatch
 
 **Fix:**
+
 1. Check browser DevTools → Network tab
-2. Verify asset URLs start with `/frank-mcguire/react-design-patterns/assets/...`
+2. Verify asset URLs start with `/frank-mcguire/react-migration/assets/...`
 3. If they don't, rebuild with correct `base` in `vite.config.ts`
 
 ### Issue 3: 404 on Page Refresh
@@ -236,8 +244,9 @@ Visit: `https://yourdomain.com/frank-mcguire/react-design-patterns/`
 **Cause:** `.htaccess` not working or missing
 
 **Fix:**
-1. Verify `.htaccess` exists in `react-design-patterns/` folder
-2. Check `RewriteBase /frank-mcguire/react-design-patterns/`
+
+1. Verify `.htaccess` exists in `react-migration/` folder
+2. Check `RewriteBase /frank-mcguire/react-migration/`
 3. Verify Apache `mod_rewrite` is enabled (contact InMotion if needed)
 
 ### Issue 4: Cookie Banner Not Showing
@@ -247,6 +256,7 @@ Visit: `https://yourdomain.com/frank-mcguire/react-design-patterns/`
 **Cause:** localStorage might be disabled
 
 **Fix:**
+
 - Check browser console for errors
 - Test in incognito mode
 - Verify JavaScript is enabled
@@ -255,7 +265,7 @@ Visit: `https://yourdomain.com/frank-mcguire/react-design-patterns/`
 
 ## File Checklist
 
-After upload, verify these files exist in `/public_html/frank-mcguire/react-design-patterns/`:
+After upload, verify these files exist in `/public_html/frank-mcguire/react-migration/`:
 
 ```
 ✓ index.html
@@ -276,7 +286,7 @@ After upload, verify these files exist in `/public_html/frank-mcguire/react-desi
 Already in `.htaccess`, but verify it's working:
 
 ```bash
-curl -I -H "Accept-Encoding: gzip" https://yourdomain.com/frank-mcguire/react-design-patterns/
+curl -I -H "Accept-Encoding: gzip" https://yourdomain.com/frank-mcguire/react-migration/
 ```
 
 Should show: `Content-Encoding: gzip`
@@ -355,7 +365,7 @@ If you prefer `react-patterns.yourdomain.com` instead of a subdirectory:
 **Common Questions:**
 
 **Q: Can I use the same directory for Angular and React?**
-A: No, they're separate apps. Keep Angular at `/angular-design-patterns/` and React at `/frank-mcguire/react-design-patterns/`
+A: No, they're separate apps. Keep Angular at `/angular-design-patterns/` and React at `/frank-mcguire/react-migration/`
 
 **Q: Will this replace the Angular app?**
 A: No, this is a separate React demo app. Angular stays at its current path.
@@ -379,13 +389,13 @@ A: Yes, just update `base` in `vite.config.ts`, rebuild, and move files in cPane
 
 **Deployment checklist:**
 
-- [ ] Configure `vite.config.ts` with `base: '/frank-mcguire/react-design-patterns/'`
+- [ ] Configure `vite.config.ts` with `base: '/frank-mcguire/react-migration/'`
 - [ ] Update `.htaccess` with subdirectory path
 - [ ] Run `npm run build`
-- [ ] Create `/public_html/frank-mcguire/react-design-patterns/` on server
+- [ ] Create `/public_html/frank-mcguire/react-migration/` on server
 - [ ] Upload `dist/` contents to that folder
 - [ ] Verify `.htaccess` uploaded and visible
-- [ ] Test `https://yourdomain.com/frank-mcguire/react-design-patterns/`
+- [ ] Test `https://yourdomain.com/frank-mcguire/react-migration/`
 - [ ] Test all routes and refresh behavior
 - [ ] Check browser console for errors
 

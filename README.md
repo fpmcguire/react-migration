@@ -1,11 +1,11 @@
-# React Design Patterns
+# React Migration
 
-A comprehensive catalog of modern React 19 design patterns, professionally migrated from Angular 21.
+A comprehensive catalog of modern React 19 patterns, professionally migrated from Angular 21.
 
 **Live Demo**: [Your deployed URL]
 
-[![CI/CD](https://github.com/yourusername/react-design-patterns/workflows/CI%2FCD%20Pipeline/badge.svg)](https://github.com/yourusername/react-design-patterns/actions)
-[![codecov](https://codecov.io/gh/yourusername/react-design-patterns/branch/main/graph/badge.svg)](https://codecov.io/gh/yourusername/react-design-patterns)
+[![CI/CD](https://github.com/yourusername/react-migration/workflows/CI%2FCD%20Pipeline/badge.svg)](https://github.com/yourusername/react-migration/actions)
+[![codecov](https://codecov.io/gh/yourusername/react-migration/branch/main/graph/badge.svg)](https://codecov.io/gh/yourusername/react-migration)
 
 ---
 
@@ -26,8 +26,8 @@ A comprehensive catalog of modern React 19 design patterns, professionally migra
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/react-design-patterns.git
-cd react-design-patterns
+git clone https://github.com/yourusername/react-migration.git
+cd react-migration
 
 # Install dependencies
 npm install
@@ -111,6 +111,7 @@ See [TESTING-GUIDE.md](./TESTING-GUIDE.md) for detailed testing documentation.
 ### Quick Deploy
 
 **Netlify** (Recommended):
+
 ```bash
 # Deploy via Netlify CLI
 npm install -g netlify-cli
@@ -119,6 +120,7 @@ netlify deploy --prod
 ```
 
 **Vercel**:
+
 ```bash
 # Deploy via Vercel CLI
 npm install -g vercel
@@ -128,7 +130,7 @@ vercel --prod
 ### Platform-Specific Guides
 
 - **Netlify**: See [netlify.toml](./netlify.toml) - Auto-configured
-- **Vercel**: See [vercel.json](./vercel.json) - Auto-configured  
+- **Vercel**: See [vercel.json](./vercel.json) - Auto-configured
 - **GitHub Pages**: See [DEPLOYMENT.md](./DEPLOYMENT.md#option-3-github-pages)
 - **AWS S3**: See [DEPLOYMENT.md](./DEPLOYMENT.md#option-4-aws-s3--cloudfront)
 - **Traditional Hosting**: See [DEPLOYMENT.md](./DEPLOYMENT.md#option-5-traditional-apachenginx)
@@ -136,11 +138,13 @@ vercel --prod
 ### CI/CD
 
 GitHub Actions workflow included (`.github/workflows/ci-cd.yml`):
+
 - Runs tests on every push/PR
 - Auto-deploys to Netlify on merge to main
 - Preview deployments for PRs
 
 **Required Secrets**:
+
 - `NETLIFY_AUTH_TOKEN`
 - `NETLIFY_SITE_ID`
 
@@ -200,16 +204,18 @@ This catalog demonstrates modern React 19 patterns:
 ### 🎯 Core Patterns
 
 1. **React 19 `use()` Hook** - Data loading with Suspense
+
    ```tsx
    // CRITICAL: Promise at module level
-   const promise = getLessonPromise('data', DATA);
-   
+   const promise = getLessonPromise("data", DATA);
+
    function Component() {
      const data = use(promise); // Suspends correctly
    }
    ```
 
 2. **Context Splitting** - Performance optimization
+
    ```tsx
    // Separate state and actions contexts
    const StateContext = createContext(...);
@@ -218,6 +224,7 @@ This catalog demonstrates modern React 19 patterns:
    ```
 
 3. **Suspense + ErrorBoundary** - Route protection
+
    ```tsx
    <ErrorBoundary FallbackComponent={ErrorFallback}>
      <Suspense fallback={<Loading />}>
@@ -227,6 +234,7 @@ This catalog demonstrates modern React 19 patterns:
    ```
 
 4. **createPortal** - Overlay rendering
+
    ```tsx
    return createPortal(<Overlay />, document.body);
    ```

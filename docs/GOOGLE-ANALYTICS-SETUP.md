@@ -2,7 +2,7 @@
 
 ## Overview
 
-Google Analytics is implemented in the React Design Patterns app with **environment-aware loading**:
+Google Analytics is implemented in the React Migration app with **environment-aware loading**:
 
 - ✅ **Development**: Analytics DISABLED (won't load or track)
 - ✅ **Production**: Analytics ENABLED (only when user consents)
@@ -17,15 +17,19 @@ Google Analytics is implemented in the React Design Patterns app with **environm
 ### 1. Environment-Based Control
 
 **Development (.env or .env.development):**
+
 ```bash
 VITE_ANALYTICS_ENABLED=false
 ```
+
 Analytics script **never loads** in development.
 
 **Production (.env.production):**
+
 ```bash
 VITE_ANALYTICS_ENABLED=true
 ```
+
 Analytics script loads **only when user accepts cookies**.
 
 ---
@@ -35,6 +39,7 @@ Analytics script loads **only when user accepts cookies**.
 **File:** `src/contexts/CookieConsentContext.tsx`
 
 **Flow:**
+
 1. User visits site → Cookie banner appears
 2. User clicks "Accept All" → `analytics: true` stored in localStorage
 3. `loadGoogleAnalytics()` function called
@@ -42,6 +47,7 @@ Analytics script loads **only when user accepts cookies**.
 5. If true, loads GA script and initializes tracking
 
 **Code:**
+
 ```typescript
 // Only loads when:
 // 1. User consented to analytics
@@ -58,11 +64,12 @@ if (preferences?.analytics && isAnalyticsEnabled) {
 **File:** `src/components/AppShell.tsx`
 
 **Implementation:**
+
 ```typescript
 useEffect(() => {
   // Track page views only if gtag loaded (user consented)
-  if (typeof window.gtag === 'function') {
-    window.gtag('config', 'G-MD06T4XGJJ', {
+  if (typeof window.gtag === "function") {
+    window.gtag("config", "G-MD06T4XGJJ", {
       page_path: location.pathname + location.search,
     });
   }
@@ -70,6 +77,7 @@ useEffect(() => {
 ```
 
 Tracks:
+
 - Route changes (/, /patterns, /patterns/use-state, etc.)
 - Only if user accepted analytics cookies
 - Only if environment allows analytics
@@ -79,6 +87,7 @@ Tracks:
 ## Configuration Files
 
 ### .env.production (Committed)
+
 ```bash
 VITE_ANALYTICS_ENABLED=true
 VITE_ENABLE_ERROR_REPORTING=false
@@ -88,6 +97,7 @@ VITE_DEBUG=false
 Used when building for production (`npm run build:inmotion`).
 
 ### .env (Development - Not Committed)
+
 ```bash
 VITE_ANALYTICS_ENABLED=false
 VITE_ENABLE_ERROR_REPORTING=false
@@ -97,6 +107,7 @@ VITE_DEBUG=true
 Create this file locally for development.
 
 ### .env.local (Optional - Not Committed)
+
 Override environment variables locally without affecting committed files.
 
 ---
@@ -104,16 +115,18 @@ Override environment variables locally without affecting committed files.
 ## Privacy & Compliance
 
 ### GDPR Compliance
+
 ✅ **Opt-in required** - GA only loads after user consent  
 ✅ **IP anonymization** - Configured in GA setup  
 ✅ **Cookie notice** - Banner shown on first visit  
-✅ **Preference storage** - Saved in localStorage  
+✅ **Preference storage** - Saved in localStorage
 
 ### Cookie Configuration
+
 ```typescript
-gtag('config', 'G-MD06T4XGJJ', {
-  anonymize_ip: true,                    // Anonymize user IPs
-  cookie_flags: 'SameSite=None;Secure',  // Secure cookie settings
+gtag("config", "G-MD06T4XGJJ", {
+  anonymize_ip: true, // Anonymize user IPs
+  cookie_flags: "SameSite=None;Secure", // Secure cookie settings
 });
 ```
 
@@ -173,10 +186,10 @@ typeof window.gtag  // function
 Enable debug mode in production:
 
 ```typescript
-gtag('config', 'G-MD06T4XGJJ', {
+gtag("config", "G-MD06T4XGJJ", {
   anonymize_ip: true,
-  cookie_flags: 'SameSite=None;Secure',
-  debug_mode: true,  // ← Add this
+  cookie_flags: "SameSite=None;Secure",
+  debug_mode: true, // ← Add this
 });
 ```
 
@@ -189,18 +202,21 @@ Then check browser console for detailed GA events.
 ### Issue: Analytics Not Tracking in Production
 
 **Check 1: Environment Variable**
+
 ```bash
 # Verify .env.production has:
 VITE_ANALYTICS_ENABLED=true
 ```
 
 **Check 2: Build Command**
+
 ```bash
 # Use correct build command:
 npm run build:inmotion
 ```
 
 **Check 3: Cookie Consent**
+
 - Open browser console
 - Clear localStorage: `localStorage.clear()`
 - Refresh page
@@ -208,10 +224,11 @@ npm run build:inmotion
 - Look for: `[GA] Loading Google Analytics...`
 
 **Check 4: Script Loaded**
+
 ```javascript
 // In browser console:
-typeof window.gtag       // Should be: function
-window.dataLayer         // Should be: Array
+typeof window.gtag; // Should be: function
+window.dataLayer; // Should be: Array
 ```
 
 ---
@@ -221,6 +238,7 @@ window.dataLayer         // Should be: Array
 **Problem:** GA loads during development
 
 **Fix:**
+
 1. Check `.env` file:
    ```bash
    VITE_ANALYTICS_ENABLED=false
@@ -233,15 +251,17 @@ window.dataLayer         // Should be: Array
 ### Issue: Cookie Banner Not Appearing
 
 **Check 1: LocalStorage**
+
 ```javascript
 // In browser console:
-localStorage.getItem('cookie-preferences')
+localStorage.getItem("cookie-preferences");
 // If not null, banner won't show
 ```
 
 **Fix:**
+
 ```javascript
-localStorage.removeItem('cookie-preferences')
+localStorage.removeItem("cookie-preferences");
 // Refresh page
 ```
 
@@ -254,8 +274,8 @@ To track custom events (button clicks, form submissions, etc.):
 ```typescript
 // Example: Track pattern view
 function trackPatternView(patternId: string) {
-  if (typeof window.gtag === 'function') {
-    window.gtag('event', 'view_pattern', {
+  if (typeof window.gtag === "function") {
+    window.gtag("event", "view_pattern", {
       pattern_id: patternId,
     });
   }
@@ -274,6 +294,7 @@ useEffect(() => {
 You're already using GA4 (ID starts with `G-`).
 
 **GA4 Benefits:**
+
 - Event-based tracking (not session-based)
 - Better privacy controls
 - Cross-platform tracking
@@ -284,6 +305,7 @@ You're already using GA4 (ID starts with `G-`).
 ## Best Practices
 
 ### ✅ DO:
+
 - Keep analytics disabled in development
 - Only load GA after user consent
 - Use environment variables for control
@@ -291,6 +313,7 @@ You're already using GA4 (ID starts with `G-`).
 - Log GA loading status in development
 
 ### ❌ DON'T:
+
 - Load GA before user consent
 - Enable analytics in development
 - Track personally identifiable information (PII)
@@ -301,19 +324,21 @@ You're already using GA4 (ID starts with `G-`).
 ## Comparison with Angular Implementation
 
 ### Similarities
+
 ✅ Same GA ID: `G-MD06T4XGJJ`  
 ✅ Cookie consent required  
 ✅ Environment-based enabling  
 ✅ Dynamic script loading  
-✅ Page view tracking  
+✅ Page view tracking
 
 ### Differences
-| Angular | React |
-|---------|-------|
+
+| Angular                        | React                    |
+| ------------------------------ | ------------------------ |
 | `environment.analyticsEnabled` | `VITE_ANALYTICS_ENABLED` |
-| Service injection | Context hook |
-| RxJS takeUntilDestroyed | useEffect cleanup |
-| NavigationEnd events | useLocation hook |
+| Service injection              | Context hook             |
+| RxJS takeUntilDestroyed        | useEffect cleanup        |
+| NavigationEnd events           | useLocation hook         |
 
 ---
 
@@ -343,6 +368,7 @@ You're already using GA4 (ID starts with `G-`).
 ## Summary
 
 **Google Analytics is now:**
+
 - ✅ Disabled in development (no tracking during coding)
 - ✅ Enabled in production (after user consent)
 - ✅ Privacy-compliant (GDPR opt-in)
@@ -350,6 +376,7 @@ You're already using GA4 (ID starts with `G-`).
 - ✅ Ready for custom event tracking
 
 **To enable in production:**
+
 1. Build with `npm run build:inmotion`
 2. Deploy to InMotion
 3. User accepts cookies

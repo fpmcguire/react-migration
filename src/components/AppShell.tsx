@@ -38,7 +38,7 @@ export function AppShell() {
           <div className={styles.headerContent}>
             <Link to="/" className={styles.logo}>
               <span className={styles.logoIcon}>⚛️</span>
-              <span className={styles.logoText}>React Design Patterns</span>
+              <span className={styles.logoText}>React Migration</span>
             </Link>
             
             <nav className={styles.nav} data-testid="app-navigation">

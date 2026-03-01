@@ -1,20 +1,20 @@
 # Deployment Guide
 
-This guide covers deploying the React Design Patterns app to various platforms.
+This guide covers deploying the React Migration app to various platforms.
 
 ---
 
 ## 🎯 InMotion Hosting (Recommended for this project)
 
-**Deployment URL:** `https://frank-mcguire.com/react-design-patterns/`
+**Deployment URL:** `https://frank-mcguire.com/react-migration/`
 
 InMotion Hosting provides shared hosting with cPanel, perfect for static React applications. This section provides complete step-by-step instructions.
 
 ### Important Notes
 
 ✅ **Static-only deployment** - No SSR configured (InMotion doesn't support Node.js SSR on shared hosting)  
-✅ **Subdirectory deployment** - App deploys to `/react-design-patterns/`  
-✅ **SPA routing** - Client-side routing handled via `.htaccess`  
+✅ **Subdirectory deployment** - App deploys to `/react-migration/`  
+✅ **SPA routing** - Client-side routing handled via `.htaccess`
 
 ### Prerequisites
 
@@ -55,14 +55,16 @@ npm run build:inmotion
 ```
 
 This command:
+
 - ✅ Compiles TypeScript
-- ✅ Sets base path to `/react-design-patterns/`
+- ✅ Sets base path to `/react-migration/`
 - ✅ Bundles and minifies code
 - ✅ Removes console.logs
 - ✅ Optimizes assets
 - ✅ Generates `dist/` folder
 
 **Verify build:**
+
 ```bash
 # Check dist folder exists
 ls dist/
@@ -82,13 +84,13 @@ Visit: `https://frank-mcguire.com/cpanel` (or your cPanel URL)
 
 - Click **File Manager** icon
 - Navigate to: `public_html/`
-- Create folder (if it doesn't exist): `react-design-patterns`
+- Create folder (if it doesn't exist): `react-migration`
 
 #### 3.3: Upload Files
 
 **Method A - Direct Upload (slower, many files):**
 
-1. Enter `react-design-patterns/` folder
+1. Enter `react-migration/` folder
 2. Click **Upload** button
 3. Upload ALL files from `dist/` folder:
    - `index.html`
@@ -104,7 +106,7 @@ cd dist
 zip -r react-app.zip .
 ```
 
-1. Upload `react-app.zip` to `react-design-patterns/` folder
+1. Upload `react-app.zip` to `react-migration/` folder
 2. Right-click ZIP file → **Extract**
 3. Extract to current directory
 4. Delete `react-app.zip` after extraction
@@ -112,12 +114,12 @@ zip -r react-app.zip .
 #### 3.4: Verify .htaccess
 
 1. Enable **Show Hidden Files** (checkbox in File Manager)
-2. Verify `.htaccess` exists in `react-design-patterns/` folder
+2. Verify `.htaccess` exists in `react-migration/` folder
 3. Right-click `.htaccess` → **Edit**
 4. Confirm it contains:
    ```apache
-   RewriteBase /react-design-patterns/
-   RewriteRule . /react-design-patterns/index.html [L]
+   RewriteBase /react-migration/
+   RewriteRule . /react-migration/index.html [L]
    ```
 
 ---
@@ -136,14 +138,15 @@ If you prefer FileZilla or another FTP client:
 #### 4.2: Upload Files
 
 1. Connect to FTP
-2. Navigate to: `public_html/react-design-patterns/`
+2. Navigate to: `public_html/react-migration/`
 3. Upload ALL contents of `dist/` folder
 4. **IMPORTANT:** Upload the contents, not the `dist` folder itself
 
 **Expected structure on server:**
+
 ```
 public_html/
-└── react-design-patterns/
+└── react-migration/
     ├── index.html
     ├── .htaccess
     ├── assets/
@@ -160,7 +163,7 @@ public_html/
 
 #### 5.1: Visit Your Site
 
-Open: `https://frank-mcguire.com/react-design-patterns/`
+Open: `https://frank-mcguire.com/react-migration/`
 
 #### 5.2: Test Core Functionality
 
@@ -170,11 +173,12 @@ Open: `https://frank-mcguire.com/react-design-patterns/`
 - [ ] Pattern detail pages load
 - [ ] Cookie banner appears on first visit
 - [ ] Browser refresh doesn't cause 404
-- [ ] Direct URL access works (e.g., `/react-design-patterns/patterns/use-state`)
+- [ ] Direct URL access works (e.g., `/react-migration/patterns/use-state`)
 
 #### 5.3: Check Browser Console
 
 Press `F12` → Console tab
+
 - [ ] No JavaScript errors
 - [ ] No 404 errors for assets
 - [ ] All CSS/JS files loading correctly
@@ -190,6 +194,7 @@ Press `F12` → Console tab
 3. Run audit (Desktop or Mobile)
 
 **Target Scores:**
+
 - Performance: 90+
 - Accessibility: 90+
 - Best Practices: 90+
@@ -198,7 +203,8 @@ Press `F12` → Console tab
 #### 6.2: Check Loading Speed
 
 Visit: `https://www.webpagetest.org/`
-- Test URL: `https://frank-mcguire.com/react-design-patterns/`
+
+- Test URL: `https://frank-mcguire.com/react-migration/`
 - Target: First Contentful Paint < 1.8s
 
 ---
@@ -212,9 +218,10 @@ Visit: `https://www.webpagetest.org/`
 **Cause:** Incorrect base path configuration
 
 **Fix:**
+
 1. Verify you used `npm run build:inmotion` (not `npm run build`)
 2. Check browser DevTools → Network tab
-3. Assets should load from `/react-design-patterns/assets/...`
+3. Assets should load from `/react-migration/assets/...`
 4. If assets are trying to load from `/assets/...`, rebuild with correct config
 
 ---
@@ -226,7 +233,8 @@ Visit: `https://www.webpagetest.org/`
 **Cause:** Base path mismatch or incorrect upload
 
 **Fix:**
-1. Check `vite.config.inmotion.ts` has `base: '/react-design-patterns/'`
+
+1. Check `vite.config.inmotion.ts` has `base: '/react-migration/'`
 2. Rebuild: `npm run build:inmotion`
 3. Re-upload `dist/` contents
 4. Verify folder structure on server
@@ -240,12 +248,13 @@ Visit: `https://www.webpagetest.org/`
 **Cause:** `.htaccess` not working or missing
 
 **Fix:**
-1. Verify `.htaccess` exists in `react-design-patterns/` folder
+
+1. Verify `.htaccess` exists in `react-migration/` folder
 2. Enable "Show Hidden Files" in File Manager
 3. Check `.htaccess` content:
    ```apache
-   RewriteBase /react-design-patterns/
-   RewriteRule . /react-design-patterns/index.html [L]
+   RewriteBase /react-migration/
+   RewriteRule . /react-migration/index.html [L]
    ```
 4. If still not working, contact InMotion support to verify `mod_rewrite` is enabled
 
@@ -258,6 +267,7 @@ Visit: `https://www.webpagetest.org/`
 **Cause:** CSS files not uploading or incorrect paths
 
 **Fix:**
+
 1. Check `assets/` folder uploaded completely
 2. Verify CSS files exist: `assets/index-[hash].css`
 3. Check browser Network tab for 404s
@@ -272,6 +282,7 @@ Visit: `https://www.webpagetest.org/`
 **Cause:** localStorage disabled or JavaScript error
 
 **Fix:**
+
 1. Check browser console for errors
 2. Test in incognito mode
 3. Verify JavaScript is enabled
@@ -323,7 +334,7 @@ If something breaks:
 Verify gzip is working:
 
 ```bash
-curl -I -H "Accept-Encoding: gzip" https://frank-mcguire.com/react-design-patterns/
+curl -I -H "Accept-Encoding: gzip" https://frank-mcguire.com/react-migration/
 ```
 
 Should show: `Content-Encoding: gzip`
@@ -331,6 +342,7 @@ Should show: `Content-Encoding: gzip`
 #### Long-term Caching
 
 Asset files already have cache headers in `.htaccess`:
+
 - Images: 1 year
 - CSS/JS: 1 month
 - HTML: No cache (always fresh)
@@ -356,29 +368,36 @@ Edit `index.html` before building to add:
 
 ```html
 <!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<script
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
+></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'GA_MEASUREMENT_ID');
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "GA_MEASUREMENT_ID");
 </script>
 ```
 
 #### Uptime Monitoring
 
 Use services like:
+
 - UptimeRobot (free)
 - Pingdom
 - StatusCake
 
-Monitor: `https://frank-mcguire.com/react-design-patterns/`
+Monitor: `https://frank-mcguire.com/react-migration/`
 
 ---
 
 ### Support
 
 **InMotion Support:**
+
 - Live Chat: Available 24/7
 - Phone: Check your InMotion account
 - Tickets: Via cPanel
@@ -402,21 +421,25 @@ A: Varies by plan, but our build (~2-5MB) is well within limits.
 ### Quick Reference
 
 **Build Command:**
+
 ```bash
 npm run build:inmotion
 ```
 
 **Upload Location:**
+
 ```
-public_html/react-design-patterns/
+public_html/react-migration/
 ```
 
 **Live URL:**
+
 ```
-https://frank-mcguire.com/react-design-patterns/
+https://frank-mcguire.com/react-migration/
 ```
 
 **Critical Files:**
+
 - `vite.config.inmotion.ts` - Sets base path
 - `public/.htaccess` - SPA routing
 - `package.json` - Build script
@@ -544,9 +567,7 @@ Create `vercel.json`:
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
   "headers": [
     {
       "source": "/assets/(.*)",
@@ -581,14 +602,16 @@ vercel --prod
 **Setup:**
 
 1. Install gh-pages:
+
    ```bash
    npm install -D gh-pages
    ```
 
 2. Update `package.json`:
+
    ```json
    {
-     "homepage": "https://yourusername.github.io/react-design-patterns",
+     "homepage": "https://yourusername.github.io/react-migration",
      "scripts": {
        "predeploy": "npm run build",
        "deploy": "gh-pages -d dist"
@@ -597,14 +620,16 @@ vercel --prod
    ```
 
 3. Update `vite.config.ts` for correct base path:
+
    ```typescript
    export default defineConfig({
-     base: '/react-design-patterns/',
+     base: "/react-migration/",
      // ... rest of config
    });
    ```
 
 4. Deploy:
+
    ```bash
    npm run deploy
    ```
@@ -619,16 +644,16 @@ vercel --prod
 
 ```bash
 # Create bucket
-aws s3 mb s3://react-design-patterns
+aws s3 mb s3://react-migration
 
 # Configure for static hosting
-aws s3 website s3://react-design-patterns \
+aws s3 website s3://react-migration \
   --index-document index.html \
   --error-document index.html
 
 # Upload build
 npm run build
-aws s3 sync dist/ s3://react-design-patterns --delete
+aws s3 sync dist/ s3://react-migration --delete
 ```
 
 **CloudFront Configuration:**
@@ -647,7 +672,7 @@ aws s3 sync dist/ s3://react-design-patterns --delete
 # deploy-aws.sh
 
 npm run build
-aws s3 sync dist/ s3://react-design-patterns --delete
+aws s3 sync dist/ s3://react-migration --delete
 aws cloudfront create-invalidation --distribution-id YOUR_ID --paths "/*"
 ```
 
@@ -674,7 +699,7 @@ aws cloudfront create-invalidation --distribution-id YOUR_ID --paths "/*"
 server {
   listen 80;
   server_name yourdomain.com;
-  root /var/www/react-design-patterns/dist;
+  root /var/www/react-migration/dist;
   index index.html;
 
   # Gzip compression
@@ -703,7 +728,7 @@ server {
 
 ```bash
 npm run build
-rsync -avz dist/ user@server:/var/www/react-design-patterns/
+rsync -avz dist/ user@server:/var/www/react-migration/
 ```
 
 ---
@@ -720,6 +745,7 @@ VITE_DEBUG=true
 ### Production
 
 Configure in hosting platform:
+
 - **Netlify**: Site settings → Environment variables
 - **Vercel**: Project settings → Environment Variables
 - **GitHub Pages**: Use GitHub Secrets + Actions
@@ -728,7 +754,7 @@ Configure in hosting platform:
 
 ```typescript
 const apiUrl = import.meta.env.VITE_API_URL;
-const isDebug = import.meta.env.VITE_DEBUG === 'true';
+const isDebug = import.meta.env.VITE_DEBUG === "true";
 ```
 
 ---
@@ -749,25 +775,25 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
-          cache: 'npm'
-      
+          node-version: "20"
+          cache: "npm"
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run tests
         run: npm run test -- --run
-      
+
       - name: Build
         run: npm run build
-      
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -777,18 +803,18 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
           name: dist
           path: dist/
-      
+
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v2.0
         with:
-          publish-dir: './dist'
+          publish-dir: "./dist"
           production-deploy: true
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
@@ -823,8 +849,8 @@ plugins: [
 Add to `index.html`:
 
 ```html
-<link rel="preload" as="style" href="/src/styles/global.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="/src/styles/global.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
 ```
 
 ### 3. Enable Brotli Compression
@@ -842,7 +868,7 @@ For custom servers, configure compression middleware.
 ```typescript
 // src/utils/analytics.ts
 export function initAnalytics() {
-  if (import.meta.env.VITE_ENABLE_ANALYTICS === 'true') {
+  if (import.meta.env.VITE_ENABLE_ANALYTICS === "true") {
     // Initialize analytics (e.g., Google Analytics, Plausible)
   }
 }
@@ -859,12 +885,12 @@ npm install @sentry/react
 
 ```typescript
 // src/main.tsx
-import * as Sentry from '@sentry/react';
+import * as Sentry from "@sentry/react";
 
 if (import.meta.env.PROD) {
   Sentry.init({
     dsn: import.meta.env.VITE_SENTRY_DSN,
-    environment: 'production',
+    environment: "production",
   });
 }
 ```
@@ -892,10 +918,12 @@ After deployment:
 ## Rollback Strategy
 
 ### Netlify/Vercel
+
 - Both platforms keep deployment history
 - Click "Rollback" in dashboard to previous version
 
 ### GitHub Pages
+
 ```bash
 git revert HEAD
 git push
@@ -903,6 +931,7 @@ npm run deploy
 ```
 
 ### AWS S3
+
 - Keep previous build in separate folder
 - Restore from S3 versioning or backup
 

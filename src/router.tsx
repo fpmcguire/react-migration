@@ -54,7 +54,12 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]);
+], {
+  // CRITICAL: Set basename to match deployment subdirectory in production
+  // For local dev (Vite serves from /): defaults to '/'
+  // For InMotion deployment: set to '/react-migration/'
+  basename: import.meta.env.BASE_URL || '/',
+});
 
 // Simple 404 page (not lazy-loaded since it's small)
 function NotFoundPage() {

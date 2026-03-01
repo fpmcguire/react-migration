@@ -14,7 +14,7 @@ export default function HomePage() {
     <div className={styles.container} data-testid="home-page">
       <section className={styles.hero}>
         <h1 className={styles.title} data-testid="home-page-title">
-          React Design Patterns
+          React Migration
         </h1>
         <p className={styles.subtitle} data-testid="home-page-subtitle">
           A comprehensive catalog of modern React 19 patterns and best practices
